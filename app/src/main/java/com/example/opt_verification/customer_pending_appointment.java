@@ -52,6 +52,7 @@ public class customer_pending_appointment extends AppCompatActivity {
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
                 final String choice = adapterView.getItemAtPosition(i).toString() ;
 
                 dbpa.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -64,9 +65,9 @@ public class customer_pending_appointment extends AppCompatActivity {
 
                             pending_appointment pa = ds.getValue(pending_appointment.class) ;
                             String n = pa.getCid() ;
+
                             if( FirebaseAuth.getInstance().getCurrentUser().getUid().equals(n) )
                             {
-
                                 if (choice.equals("Upcoming"))
                                 {
                                     if( pa.getD().after(c_date) )
@@ -94,8 +95,6 @@ public class customer_pending_appointment extends AppCompatActivity {
 
                     }
                 });
-
-
             }
 
             @Override

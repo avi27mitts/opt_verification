@@ -44,7 +44,6 @@ public class customer_edit_details extends AppCompatActivity {
         btn_update = findViewById(R.id.ced_btn_update) ;
 
         btn_update.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
 
@@ -52,6 +51,18 @@ public class customer_edit_details extends AppCompatActivity {
 
             }
         });
+
+        btn_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Intent intent = new Intent( getApplicationContext() , customer_update_password.class ) ;
+                //startActivity( intent ) ;
+                Toast.makeText( getApplicationContext() , "not done yet." , Toast.LENGTH_SHORT ).show() ;
+
+            }
+        });
+
     }
 
     private void update_details(){

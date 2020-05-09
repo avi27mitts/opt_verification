@@ -15,11 +15,19 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:layout_alignParentTop="true"/>
 
+    <Spinner
+        android:id="@+id/wc_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:entries="@array/confirmed"
+        android:layout_below="@+id/wc_tv"
+        android:layout_marginTop="25dp"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/wc_lv"
-        android:layout_below="@+id/wc_tv"
+        android:layout_below="@+id/wc_spinner"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="25dp"/>
 
