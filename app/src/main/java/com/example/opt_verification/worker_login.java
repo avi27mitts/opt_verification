@@ -68,14 +68,9 @@ public class worker_login extends AppCompatActivity {
         progressDialog = new ProgressDialog( worker_login.this ) ;
 
         if ( user != null){
-
-            //numb = dbworker.child(user.getUid()).child("work").toString() ;
-
             finish() ;
             Intent intent = new Intent( getApplicationContext() , worker_options.class) ;
-            intent.putExtra(NUMBER , etnumber.getText().toString()) ;
             startActivity( intent ) ;
-
         }
 
         btnotp.setOnClickListener(new View.OnClickListener() {

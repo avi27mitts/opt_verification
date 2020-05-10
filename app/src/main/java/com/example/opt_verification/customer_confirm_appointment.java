@@ -23,11 +23,12 @@ import java.util.List;
 
 public class customer_confirm_appointment extends AppCompatActivity {
 
-    DatabaseReference dbca ;
+    DatabaseReference dbca , dbc ;
     List<confirm_appointment> cl ;
     ListView cca_lv ;
     private Spinner cca_s ;
     private Date c_date = new Date() ;
+    String cust_name ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class customer_confirm_appointment extends AppCompatActivity {
         setContentView(R.layout.activity_customer_confirm_appointment);
 
         dbca = FirebaseDatabase.getInstance().getReference("confirmed") ;
+        dbc = FirebaseDatabase.getInstance().getReference("customer").child(FirebaseAuth.getInstance().getCurrentUser().getUid()) ;
         cca_lv = findViewById(R.id.cca_lv) ;
         cca_s = findViewById(R.id.cca_s) ;
         cl = new ArrayList<>() ;
@@ -44,49 +46,7 @@ public class customer_confirm_appointment extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 final String choice = adapterView.getItemAtPosition(i).toString() ;
-
-                /*
-
-                dbca.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        cl.clear() ;
-
-                        for ( DataSnapshot ds : dataSnapshot.getChildren() ){
-
-                            confirm_appointment pa = ds.getValue(confirm_appointment.class) ;
-                            String n = pa.getCid() ;
-                            if( FirebaseAuth.getInstance().getCurrentUser().getUid().equals(n) )
-                            {
-                                if (choice.equals("Upcoming"))
-                                {
-                                    if( pa.getD().after(c_date) )
-                                    {
-                                        cl.add(pa) ;
-                                    }
-                                }
-                                else if (choice.equals("Completed"))
-                                {
-                                    if( pa.getD().before(c_date) )
-                                    {
-                                        cl.add(pa) ;
-                                    }
-                                }
-                            }
-                        }
-
-                        customer_confirm adapter = new customer_confirm( customer_confirm_appointment.this , cl ) ;
-
-                        cca_lv.setAdapter(adapter) ;
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                Toast.makeText( getApplicationContext() , choice , Toast.LENGTH_SHORT ).show() ;
 
                 dbca.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -97,8 +57,8 @@ public class customer_confirm_appointment extends AppCompatActivity {
                         for ( DataSnapshot ds : dataSnapshot.getChildren() ){
 
                             confirm_appointment pa = ds.getValue(confirm_appointment.class) ;
-                            String n = pa.getCid() ;
-                            if( FirebaseAuth.getInstance().getCurrentUser().getUid().equals(n) )
+                            String n = pa.getCname() ;
+                            if( cust_name.equals(n) )
                             {
                                 if (choice.equals("Upcoming"))
                                 {
@@ -128,7 +88,6 @@ public class customer_confirm_appointment extends AppCompatActivity {
                     }
                 });
 
-                 */
             }
 
             @Override
@@ -143,6 +102,8 @@ public class customer_confirm_appointment extends AppCompatActivity {
 
                 confirm_appointment ca = cl.get(i) ;
 
+
+
             }
 
             @Override
@@ -156,32 +117,18 @@ public class customer_confirm_appointment extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        dbca.addValueEventListener(new ValueEventListener() {
+        dbc.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                cl.clear() ;
+                cust_name = dataSnapshot.child("cname").getValue().toString() ;
 
-                for ( DataSnapshot ds : dataSnapshot.getChildren() ){
-
-                    confirm_appointment ca = ds.getValue(confirm_appointment.class) ;
-                    String n = ca.getCid() ;
-                    Toast.makeText( getApplicationContext() , n , Toast.LENGTH_SHORT ).show() ;
-                    if( FirebaseAuth.getInstance().getCurrentUser().getUid().equals(ca.getCid()) )
-                    {
-                        cl.add(ca) ;
-                    }
-                }
-
-                customer_confirm adapter = new customer_confirm( customer_confirm_appointment.this , cl ) ;
-
-                cca_lv.setAdapter(adapter) ;
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        }) ;
     }
 }

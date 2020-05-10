@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,7 +57,6 @@ public class worker_confirm extends AppCompatActivity {
 
                             confirm_appointment ca = ds.getValue( confirm_appointment.class ) ;
                             if( ca.getWid().equals(na) ){
-
                                 if( choice.equals("Upcoming") ){
                                     if( ca.getD().after(curent_date) ){
                                         li.add( ca ) ;
@@ -70,6 +70,11 @@ public class worker_confirm extends AppCompatActivity {
                                 }
                             }
                         }
+
+                        customer_confirm adapter = new customer_confirm( worker_confirm.this , li ) ;
+
+                        lv.setAdapter(adapter) ;
+
                     }
 
                     @Override

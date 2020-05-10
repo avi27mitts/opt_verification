@@ -42,20 +42,21 @@ public class worker_options extends AppCompatActivity {
         fbauth = FirebaseAuth.getInstance() ;
         FirebaseUser user = fbauth.getCurrentUser() ;
 
-        dbw = FirebaseDatabase.getInstance().getReference("workers").child(user.getUid()) ;
+        if( user==null ){
+            finish() ;
+            Intent intent = new Intent( getApplicationContext() , worker_login.class) ;
+            startActivity(intent) ;
+        }
 
-        String nl = "no" ;
-        nl = getIntent().getStringExtra(worker_login.NUMBER) ;
-        final String n ;
-        n = nl ;
+        final String num = user.getPhoneNumber().substring(3) ;
 
-        db = FirebaseDatabase.getInstance().getReference("workers").child(n) ;
+        db = FirebaseDatabase.getInstance().getReference("workers").child(num) ;
 
         btn_pending.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent( getApplicationContext() , worker_pending.class) ;
-                intent.putExtra( na , n ) ;
+                intent.putExtra( na , num ) ;
                 startActivity( intent ) ;
             }
         });
@@ -64,7 +65,7 @@ public class worker_options extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent( getApplicationContext() , worker_confirm.class) ;
-                intent.putExtra( na , n ) ;
+                intent.putExtra( na , num ) ;
                 startActivity( intent );
             }
         });
