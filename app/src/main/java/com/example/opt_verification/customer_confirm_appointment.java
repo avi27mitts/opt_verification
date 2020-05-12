@@ -125,7 +125,7 @@ public class customer_confirm_appointment extends AppCompatActivity {
         final DatabaseReference dbw = FirebaseDatabase.getInstance().getReference("worker").child(c.getWid()) ;
 
         seek.setMin(0) ;
-        seek.setMax(10) ;
+        seek.setMax(20) ;
         tv.setSingleLine() ;
         tv.setText( "Please rate the service provided by " + c.getWname() + " : " ) ;
         layout.addView( seek ) ;
