@@ -126,10 +126,10 @@ public class customer_confirm_appointment extends AppCompatActivity {
 
         seek.setMin(0) ;
         seek.setMax(10) ;
-        tv.setSingleLine();
-        tv.setText( "Please rate the service provided by " + c.getWname() + " : " );
+        tv.setSingleLine() ;
+        tv.setText( "Please rate the service provided by " + c.getWname() + " : " ) ;
         layout.addView( seek ) ;
-        layout.addView( tv );
+        layout.addView( tv ) ;
 
         builder.setView( layout ) ;
         builder.setPositiveButton("Submit.", new DialogInterface.OnClickListener() {
