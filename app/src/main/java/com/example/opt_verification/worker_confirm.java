@@ -71,7 +71,7 @@ public class worker_confirm extends AppCompatActivity {
                             }
                         }
 
-                        customer_confirm adapter = new customer_confirm( worker_confirm.this , li ) ;
+                        w_confirm adapter = new w_confirm( worker_confirm.this , li ) ;
 
                         lv.setAdapter(adapter) ;
 

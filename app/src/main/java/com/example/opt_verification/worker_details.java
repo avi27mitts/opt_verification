@@ -10,7 +10,7 @@ public class worker_details {
     //List<String> wlist ;
 
     public worker_details() {
-        rating = 10.0 ;
+        rating = 0.0 ;
         jobs_done = 0 ;
     }
 

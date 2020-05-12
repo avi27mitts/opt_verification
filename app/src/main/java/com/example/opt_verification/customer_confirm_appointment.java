@@ -1,13 +1,20 @@
 package com.example.opt_verification;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,7 +53,6 @@ public class customer_confirm_appointment extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 final String choice = adapterView.getItemAtPosition(i).toString() ;
-                Toast.makeText( getApplicationContext() , choice , Toast.LENGTH_SHORT ).show() ;
 
                 dbca.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -87,7 +93,6 @@ public class customer_confirm_appointment extends AppCompatActivity {
 
                     }
                 });
-
             }
 
             @Override
@@ -96,21 +101,64 @@ public class customer_confirm_appointment extends AppCompatActivity {
             }
         });
 
-        cca_lv.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        cca_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 confirm_appointment ca = cl.get(i) ;
 
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+                if( ca.getD().before(c_date) ){
+                    get_rating( ca ) ;
+                }
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void get_rating(final confirm_appointment c ) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder( this ) ;
+        LinearLayout layout = new LinearLayout( this ) ;
+        TextView tv = new TextView( this ) ;
+        final SeekBar seek = new SeekBar( this ) ;
+        final DatabaseReference dbw = FirebaseDatabase.getInstance().getReference("worker").child(c.getWid()) ;
+
+        seek.setMin(0) ;
+        seek.setMax(10) ;
+        tv.setSingleLine();
+        tv.setText( "Please rate the service provided by " + c.getWname() + " : " );
+        layout.addView( seek ) ;
+        layout.addView( tv );
+
+        builder.setView( layout ) ;
+        builder.setPositiveButton("Submit.", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                final float rating = seek.getProgress() ;
+                //c.setRating(rating) ;
+                dbw.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Toast.makeText( getApplicationContext() , c.getWid() , Toast.LENGTH_SHORT ).show() ;
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                return ;
+            }
+        }) ;
+
+        builder.create().show() ;
+
     }
 
     @Override
